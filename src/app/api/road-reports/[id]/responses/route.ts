@@ -17,7 +17,7 @@ function extractIdFromUrl(url: string): number | null {
 
 export async function GET(
   request: Request,
-  _ctx: { params: { id: string } }
+  _context: { params: Promise<{ id: string }> }
 ) {
   const id = extractIdFromUrl(request.url);
   if (id === null) return NextResponse.json({ error: "Invalid report id" }, { status: 400 });
@@ -32,7 +32,7 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  _ctx: { params: { id: string } }
+  _context: { params: Promise<{ id: string }> }
 ) {
   try {
     const id = extractIdFromUrl(request.url);
