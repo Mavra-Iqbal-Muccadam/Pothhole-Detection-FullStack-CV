@@ -1,0 +1,22 @@
+# Python
+**/venv/
+venv/
+__pycache__/
+**/__pycache__/
+
+# YOLO
+*.pt
+road-backend/uploads/
+road-backend/processed/
+road-backend/static/
+*.mp4
+*.avi
+
+# Node
+node_modules/
+.next/
+dist/
+
+# OS trash
+.DS_Store
+Thumbs.db

@@ -1,0 +1,441 @@
+/* src/components/RoadVisualization.css */
+.road-visualization-container {
+  width: 95%;
+  max-width: 1400px;
+  height: 500px;
+  margin: 40px auto;
+  perspective: 1000px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #87CEEB 0%, #98D8E8 40%, #B0C4DE 100%);
+  border-radius: 15px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.road-scene {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: rotateX(45deg);
+  transform-style: preserve-3d;
+}
+
+/* Wide Road Surface */
+.road-surface {
+  position: absolute;
+  top: 30%;
+  left: 5%;
+  width: 90%;
+  height: 200px;
+  background: 
+    /* Base grey road color */
+    linear-gradient(90deg, 
+      #5A6268 0%,
+      #6C757D 15%,
+      #5A6268 30%,
+      #6C757D 45%,
+      #5A6268 60%,
+      #6C757D 75%,
+      #5A6268 90%,
+      #6C757D 100%
+    ),
+    /* Road texture */
+    repeating-linear-gradient(90deg,
+      transparent 0%,
+      transparent 98%,
+      rgba(255, 255, 255, 0.1) 98%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+  background-blend-mode: overlay;
+  border-radius: 8px;
+  box-shadow: 
+    inset 0 4px 25px rgba(0, 0, 0, 0.6),
+    0 0 0 3px #495057,
+    0 10px 30px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+/* Road Texture Overlay */
+.road-texture {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 1px, transparent 1px),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 80px 80px, 60px 60px, 100px 100px;
+  opacity: 0.4;
+  border-radius: 8px;
+}
+
+/* Center Yellow Dashed Lines */
+.center-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 40px,
+    #FFD700 40px,
+    #FFD700 80px
+  );
+  z-index: 3;
+  box-shadow: 
+    0 0 15px #FFD700,
+    0 0 30px rgba(255, 215, 0, 0.4);
+  animation: lineMove 2s linear infinite;
+}
+
+@keyframes lineMove {
+  0% { background-position-x: 0; }
+  100% { background-position-x: 80px; }
+}
+
+/* Lane Markings - Side Lines */
+.lane-markings {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+.side-line {
+  position: absolute;
+  height: 100%;
+  width: 4px;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 30px,
+    #FFFFFF 30px,
+    #FFFFFF 60px
+  );
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.side-line.left {
+  left: 25%;
+}
+
+.side-line.right {
+  right: 25%;
+}
+
+/* Moving Cars */
+.cars-container {
+  position: absolute;
+  top: 30%;
+  left: 5%;
+  width: 90%;
+  height: 200px;
+  z-index: 10;
+}
+
+.car {
+  position: absolute;
+  width: 80px;
+  height: 35px;
+  border-radius: 8px 8px 4px 4px;
+  z-index: 10;
+  transition: left 0.1s linear;
+  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+}
+
+.car-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px 8px 4px 4px;
+  box-shadow: 
+    inset 0 -4px 0 rgba(0, 0, 0, 0.3),
+    0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.car-top {
+  position: absolute;
+  top: 5px;
+  left: 8px;
+  right: 8px;
+  height: 12px;
+  background: linear-gradient(135deg, #2C3E50, #34495E);
+  border-radius: 4px 4px 2px 2px;
+}
+
+.car-windows {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  right: 10px;
+  height: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.car-window {
+  width: 48%;
+  height: 100%;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  border-radius: 2px;
+}
+
+.car-lights {
+  position: absolute;
+  top: 12px;
+  width: 6px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.car-headlight {
+  right: -3px;
+  background: #F1C40F;
+  box-shadow: 0 0 15px #F1C40F;
+  animation: headlightPulse 2s ease-in-out infinite;
+}
+
+.car-taillight {
+  left: -3px;
+  background: #E74C3C;
+  box-shadow: 0 0 12px #E74C3C;
+}
+
+.car-wheels {
+  position: absolute;
+  bottom: -6px;
+  left: 8px;
+  right: 8px;
+  height: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.wheel {
+  width: 14px;
+  height: 10px;
+  background: #2C3E50;
+  border-radius: 5px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.car-shadow {
+  position: absolute;
+  top: 100%;
+  left: 10px;
+  right: 10px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  filter: blur(4px);
+}
+
+@keyframes headlightPulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* Road Damage - Cracks */
+.road-cracks {
+  position: absolute;
+  top: 30%;
+  left: 5%;
+  width: 90%;
+  height: 200px;
+  z-index: 4;
+}
+
+.crack {
+  position: absolute;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #8B4513, transparent);
+  border-radius: 2px;
+  box-shadow: 0 0 8px #8B4513;
+  animation: crackGlow 3s ease-in-out infinite;
+}
+
+.crack::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, #A0522D, transparent);
+  border-radius: 2px;
+  animation: crackShift 4s ease-in-out infinite;
+}
+
+@keyframes crackGlow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+@keyframes crackShift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(2px); }
+}
+
+/* Potholes */
+.potholes-container {
+  position: absolute;
+  top: 30%;
+  left: 5%;
+  width: 90%;
+  height: 200px;
+  z-index: 4;
+}
+
+.pothole {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #4A4A4A, #2C2C2C);
+  box-shadow: 
+    inset 0 0 20px rgba(0, 0, 0, 0.8),
+    0 0 15px rgba(139, 69, 19, 0.6);
+  animation: potholePulse 5s ease-in-out infinite;
+}
+
+.pothole-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle at 40% 40%, #363636, #1A1A1A);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.9);
+}
+
+.pothole-cracks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle, transparent 30%, #8B4513 30%, #8B4513 35%, transparent 35%),
+    radial-gradient(circle, transparent 50%, #A0522D 50%, #A0522D 55%, transparent 55%);
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+@keyframes potholePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Road Shoulders */
+.road-shoulders {
+  position: absolute;
+  top: 30%;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  z-index: 1;
+}
+
+.shoulder {
+  position: absolute;
+  height: 100%;
+  width: 5%;
+  background: linear-gradient(90deg, #8C7B6B, #A39282);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.shoulder.left {
+  left: 0;
+  border-radius: 8px 0 0 8px;
+}
+
+.shoulder.right {
+  right: 0;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Environment Elements */
+.environment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  z-index: 1;
+}
+
+.horizon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #87CEEB 0%, #B0C4DE 100%);
+}
+
+/* Road Stats */
+.road-stats {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 20;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.stat-item:last-child {
+  margin-bottom: 0;
+}
+
+.stat-value {
+  font-weight: bold;
+  color: #3498db;
+  margin-left: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .road-visualization-container {
+    height: 400px;
+    transform: rotateX(55deg);
+  }
+  
+  .road-surface {
+    height: 150px;
+  }
+  
+  .cars-container,
+  .road-cracks,
+  .potholes-container {
+    height: 150px;
+  }
+  
+  .car {
+    width: 60px;
+    height: 28px;
+  }
+  
+  .road-stats {
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 15px;
+  }
+}
